@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="PersistBench evaluates persistent visual memory in 4D foundation models with object permanence, motion continuity, and appearance preservation."
+    />
+    <title>Can 4D Foundation Models Remember? | PersistBench</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="scanline" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="PersistBench home">
+        <span class="brand-mark"></span>
+        PersistBench
+      </a>
+      <nav aria-label="Page sections">
+        <a href="#overview">Overview</a>
+        <a href="#memory">Memory Aspect</a>
+        <a href="#dataset">Dataset</a>
+        <a href="#leaderboard">Leaderboard</a>
+        <a href="#visualization">Visualizations</a>
+        <a href="#findings">Findings</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy reveal">
+          <h1>Can 4D Foundation Models Remember?</h1>
+          <p class="submission">NeurIPS 2026 Submission</p>
+          <p class="lead">
+            PersistBench evaluates object-centric memory with 360° video as
+            omniscient ground truth, probing whether 4D foundation models truly
+            remember objects even after leaving the input view.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#leaderboard">View Leaderboard</a>
+            <a class="button primary" href="#visualization">View Visualization</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="overview" class="section overview reveal">
+        <div class="section-kicker">Overview</div>
+        <div class="overview-intro">
+          <h2>Reference-based evaluation for the hidden state of the world.</h2>
+          <p>
+            Perceiving and remembering the visual world is fundamental for
+            navigating dynamic environments. Current 4D foundation models can
+            reconstruct and generate scenes, but can they remember what they
+            have seen?
+          </p>
+        </div>
+        <div class="benchmark-compare">
+          <div class="compare-panel existing-panel">
+            <span>Drawback</span>
+            <h3>Incomplete memory evaluation</h3>
+            <div class="problem-grid drawbacks">
+              <article>
+                <span class="problem-index">01</span>
+                <h4>Visible-view bias</h4>
+                <p>Common benchmarks reward rendering what is still observable, conflating novel-view synthesis with memory.</p>
+              </article>
+              <article>
+                <span class="problem-index">02</span>
+                <h4>No hidden reference</h4>
+                <p>Standard videos lose ground truth once objects exit the frame, so off-screen object state cannot be checked.</p>
+              </article>
+              <article>
+                <span class="problem-index">03</span>
+                <h4>Reference-free scoring</h4>
+                <p>Plausibility and consistency scores can miss whether the same observed entity was faithfully retained.</p>
+              </article>
+            </div>
+          </div>
+          <div class="compare-panel persist-panel">
+            <span>Solution</span>
+            <h3>Object-centric visual memory evaluation</h3>
+            <div class="need-points">
+              <article>
+                <span class="problem-index">01</span>
+                <h4>Invisible-view memory</h4>
+                <p>Evaluates objects after they leave the input view, separating memory from visible-view synthesis.</p>
+              </article>
+              <article>
+                <span class="problem-index">02</span>
+                <h4>Ground-truth hidden state</h4>
+                <p>Uses real-world 360° observations to supervise object state beyond the perspective crop.</p>
+              </article>
+              <article>
+                <span class="problem-index">03</span>
+                <h4>Reference-based scoring</h4>
+                <p>Checks whether the same observed entity is preserved in existence, motion, and appearance.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="memory" class="section memory reveal">
+        <div class="section-kicker">Memory Aspect</div>
+        <h2>Visual memory is not a single number.</h2>
+        <p class="section-intro">
+          Inspired by human visual memory, PersistBench decomposes remembering
+          into object permanence, spatiotemporal continuity, and appearance-based
+          identity preservation.
+        </p>
+        <div class="memory-grid">
+          <article class="memory-card">
+            <h3>Object Permanence</h3>
+            <p>
+              Does an observed object continue to exist in the model's
+              representation after leaving the original field of view?
+            </p>
+            <div class="aspect-demo permanence-figure" aria-label="Object permanence three-step figure">
+              <i class="active-step-box"></i>
+              <div class="perm-step observe">
+                <b>1</b>
+                <span>Observe</span>
+                <i class="perm-camera"></i>
+                <i class="perm-object"></i>
+              </div>
+              <div class="perm-step leave">
+                <b>2</b>
+                <span>Leaves view</span>
+                <i class="perm-camera"></i>
+                <i class="perm-object"></i>
+              </div>
+              <div class="perm-step reprobe">
+                <b>3</b>
+                <span>Probe memory</span>
+                <i class="perm-camera"></i>
+                <i class="perm-object"></i>
+                <em>Does the object still exist in memory?</em>
+              </div>
+            </div>
+          </article>
+          <article class="memory-card">
+            <h3>Motion Continuity</h3>
+            <p>
+              Does the object remain at the expected position and follow a
+              coherent trajectory through space and time?
+            </p>
+            <div class="aspect-demo motion-figure" aria-label="Motion continuity three-step figure">
+              <i class="active-step-box"></i>
+              <div class="motion-step observe">
+                <b>1</b>
+                <span>Observe motion</span>
+                <i class="motion-camera"></i>
+                <i class="motion-path"></i>
+                <i class="motion-object"></i>
+              </div>
+              <div class="motion-step leave">
+                <b>2</b>
+                <span>Leaves view</span>
+                <i class="motion-camera"></i>
+                <i class="motion-path"></i>
+                <i class="motion-object"></i>
+              </div>
+              <div class="motion-step reprobe">
+                <b>3</b>
+                <span>Probe expected location</span>
+                <i class="motion-camera"></i>
+                <i class="motion-object"></i>
+                <em>Does motion follow the reference pattern?</em>
+              </div>
+            </div>
+          </article>
+          <article class="memory-card">
+            <h3>Appearance Preservation</h3>
+            <p>
+              Does the generated entity keep the same semantic visual identity
+              when revisited from a new viewpoint?
+            </p>
+            <div class="aspect-demo appearance-figure" aria-label="Appearance preservation three-step figure">
+              <i class="active-step-box"></i>
+              <div class="appearance-step observe">
+                <b>1</b>
+                <span>Observe identity</span>
+                <i class="app-camera"></i>
+                <i class="app-object"></i>
+              </div>
+              <div class="appearance-step leave">
+                <b>2</b>
+                <span>Leaves view</span>
+                <i class="app-camera"></i>
+                <i class="app-object"></i>
+              </div>
+              <div class="appearance-step reprobe">
+                <b>3</b>
+                <span>Compare identity</span>
+                <i class="app-crop probe"></i>
+                <i class="app-crop truth"></i>
+                <i class="app-match"></i>
+                <em>Does the probe image match the ground-truth identity?</em>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="dataset" class="section dataset reveal">
+        <div class="section-kicker">Dataset</div>
+        <h2>The answer is 360° video.</h2>
+        <p class="section-intro">
+          PersistBench starts with an omniscient 360° recording. From the same
+          timestamp sequence, we crop one view as the model input and another view
+          as the held-out reference. The reference crop and object mask let us test
+          whether the model remembers the target after it leaves the input shot.
+        </p>
+        <div class="dataset-case">
+          <div class="crop-stack input-stack">
+            <article class="crop-card input-card">
+              <div class="crop-card-head">
+                <span>Input shot</span>
+              </div>
+              <video autoplay muted loop playsinline controls preload="metadata">
+                <source src="assets/dataset-case/input-view.mp4" type="video/mp4" />
+              </video>
+            </article>
+            <article class="crop-card mask-card">
+              <div class="crop-card-head">
+                <span>Input mask</span>
+              </div>
+              <video autoplay muted loop playsinline controls preload="metadata">
+                <source src="assets/dataset-case/input-mask.mp4" type="video/mp4" />
+              </video>
+            </article>
+          </div>
+          <div class="sphere-panel" aria-label="360 video crop source animation">
+            <div class="sphere-header">
+              <span>Source panorama</span>
+            </div>
+            <i class="crop-arrow arrow-to-input" aria-hidden="true"></i>
+            <i class="crop-arrow arrow-to-reference" aria-hidden="true"></i>
+            <div class="sphere-wrap">
+              <video id="source360Video" autoplay muted loop playsinline controls preload="metadata">
+                <source src="assets/dataset-case/source-360-crops-web.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </div>
+          <div class="crop-stack reference-stack">
+            <article class="crop-card reference-card">
+              <div class="crop-card-head">
+                <span>Reference view</span>
+              </div>
+              <video autoplay muted loop playsinline controls preload="metadata">
+                <source src="assets/dataset-case/reference-view.mp4" type="video/mp4" />
+              </video>
+            </article>
+            <article class="crop-card mask-card">
+              <div class="crop-card-head">
+                <span>Reference mask</span>
+              </div>
+              <video autoplay muted loop playsinline controls preload="metadata">
+                <source src="assets/dataset-case/reference-mask.mp4" type="video/mp4" />
+              </video>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="leaderboard" class="section leaderboard reveal">
+        <div class="section-kicker">Leaderboard</div>
+        <h2>Persistent memory leaderboard.</h2>
+        <div class="controls" data-active="dynamic" aria-label="Leaderboard controls">
+          <span class="seg-thumb" aria-hidden="true"></span>
+          <button class="seg active" data-subset="dynamic">Static</button>
+          <button class="seg" data-subset="static">Dynamic</button>
+        </div>
+        <div class="chart-shell">
+          <div class="chart-title">Top 5 Models</div>
+          <div class="bars" id="bars" aria-label="Ranked memory score bars"></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th><button class="sort-head active" data-leader-sort="memory" type="button">Rank</button></th>
+                <th><button class="sort-head" data-leader-sort="model" type="button">Model</button></th>
+                <th><button class="sort-head" data-leader-sort="group" type="button">Type</button></th>
+                <th><button class="sort-head" data-leader-sort="permanence" type="button">Permanence</button></th>
+                <th><button class="sort-head" data-leader-sort="continuity" type="button">Continuity</button></th>
+                <th><button class="sort-head" data-leader-sort="appearance" type="button">Appearance</button></th>
+              </tr>
+            </thead>
+            <tbody id="leaderRows"></tbody>
+          </table>
+        </div>
+        <p class="data-note">
+          Scores are percentages. Values outside parentheses are measured on
+          invisible segments; values in parentheses are the corresponding visible
+          scores.
+          HyDRA visible values are marked N/A because it predicts
+          only after the object leaves view.
+        </p>
+      </section>
+
+      <section id="visualization" class="section visualizer reveal" aria-labelledby="visualizer-title">
+        <div class="section-kicker">Visualizations</div>
+        <h2 id="visualizer-title">Visualizations</h2>
+        <p class="section-intro">
+          Browse representative dynamic and static subset samples with the same
+          input, reference, prediction, and mask views used by the metric
+          explorer. For size reasons, this interactive view includes only Argus,
+          GEN3C, HyDRA, NeoVerse, TrajectoryCrafter, 4DGT, CogNVS, and
+          ReCamMaster.
+        </p>
+        <div class="viz-browser" aria-label="PersistBench example visualization browser">
+          <div class="viz-controls">
+            <label>
+              Subset
+              <select id="vizSubsetSelect"></select>
+            </label>
+            <label>
+              Case
+              <select id="vizCaseSelect"></select>
+            </label>
+            <label>
+              Rank By
+              <select id="vizSortSelect"></select>
+            </label>
+            <button class="viz-toggle" id="vizGtMaskToggle" type="button">GT Mask Off</button>
+            <button class="viz-toggle" id="vizPredMaskToggle" type="button">Pred Mask Off</button>
+          </div>
+          <div class="viz-methods" id="vizMethods"></div>
+        </div>
+      </section>
+
+      <section id="findings" class="section findings reveal">
+        <div class="section-kicker">Findings</div>
+        <h2>What PersistBench reveals.</h2>
+        <div class="finding-grid">
+          <article>
+            <span>01</span>
+            <h3>Seeing is not remembering</h3>
+            <p>
+              Every evaluated model drops once the target object becomes
+              invisible, separating novel-view synthesis from persistent memory.
+              The average dynamic visible-to-invisible gap is over 35 points
+              across public models.
+            </p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Memory is multi-faceted</h3>
+            <p>
+              Permanence and appearance are tightly coupled, while motion
+              continuity behaves more independently and should be evaluated
+              separately. The analysis reports strong Perm-App correlation and
+              weaker correlations involving Cont.
+            </p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Static and dynamic memory correlate</h3>
+            <p>
+              Models that remember static objects tend to remember dynamic
+              objects, suggesting shared underlying capabilities rather than two
+              unrelated skills.
+            </p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Generative priors help</h3>
+            <p>
+              Generative models often outperform deterministic reconstruction
+              models, especially on object permanence and appearance, because
+              large-scale video priors can fill in plausible unseen regions.
+            </p>
+          </article>
+          <article>
+            <span>05</span>
+            <h3>Camera diversity matters</h3>
+            <p>
+              Among 360° generators, more diverse camera sampling is linked
+              with stronger memory once objects leave the frame.
+            </p>
+          </article>
+          <article>
+            <span>06</span>
+            <h3>Explicit conditioning helps</h3>
+            <p>
+              Models that project input observations into target views before
+              inpainting achieve strong invisible-segment scores, indicating that
+              geometric structure can support memory under occlusion.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>PersistBench</span>
+      <span>NeurIPS 2026 Submission</span>
+    </footer>
+
+    <script src="leaderboard_scores.js"></script>
+    <script src="assets/visualization/manifest.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
